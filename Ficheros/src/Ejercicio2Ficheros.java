@@ -6,44 +6,47 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Ejercicio2Ficheros {
+
     public static void main(String[] args) throws Exception {
 
-        System.out.println("EJERCICIO 14.1");
+        System.out.println("EJERCICIO 14.2");
 
-        //Path path = Path.of("D:\\carmen\\AD\\Ficheros\\archivo.txt");
+        System.out.println("Escribir en un archivo txt lineas escritas con el teclado");
 
-        //BufferedReader bf = new BufferedReader(new InputStreamReader(new InputStream("archivo")));
-
-        System.out.println("Escribir en un archivo txt una linea con ñ y otra linea");
-
-        try (BufferedWriter bu = Files.newBufferedWriter(Path.of("D:\\carmen\\AD\\Ficheros\\archivo2.txt"), StandardCharsets.UTF_8)){
-            
-            bu.write("Linea con la letra ñ");
-            bu.flush();
-            
-            bu.newLine();
-            bu.write("Otra línea");
+        try (BufferedWriter bu = Files.newBufferedWriter(Path.of("D:\\carmen\\AD\\Ficheros\\archivo2.txt"), StandardCharsets.UTF_8)) {
 
             Scanner teclado = new Scanner(System.in);
-            System.out.println("Dale a enter para escribir");
-            teclado.nextLine();
-            
+
+            String frase;
+
+            while (true) { 
+                System.out.println("Escribe linea: ");
+                frase = teclado.nextLine();
+                if (frase.equals("fin")) {
+                    break;
+                }
+                bu.write(frase);
+                bu.newLine();
+            }
+
+
+/*          MI SOLUCION: 
+            frase = " EJERCICIO 14.2"
+            while (!frase.equals("fin")) {
+                System.out.println("Escribe algo para poner en el archivo");
+                frase = teclado.nextLine();
+                if (!frase.equals("fin")) {
+                    bu.write(frase);
+                    bu.flush();
+                    bu.newLine();
+                }
+            }
+*/
 
         } catch (Exception e) {
 
         }
 
         System.out.println("Fin del programa");
-
-        /*
-        try (BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8)){
-            String linea;
-            while ((linea = bufferedReader.readLine()) != null) { 
-                System.out.println(linea);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
     }
 }
