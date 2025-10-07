@@ -17,7 +17,7 @@ public class Ejercicio2Ficheros {
 
             Scanner teclado = new Scanner(System.in);
 
-            String frase;
+            String frase = " ";
 
             while (true) { 
                 System.out.println("Escribe linea: ");
