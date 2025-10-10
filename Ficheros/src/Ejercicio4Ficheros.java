@@ -7,7 +7,7 @@ public class Ejercicio4Ficheros {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("EJERCICIO 14.3");
+        System.out.println("EJERCICIO 14.4");
 
         System.out.println("Leer el contenido de un archivo txt");
 
@@ -15,7 +15,6 @@ public class Ejercicio4Ficheros {
 
             System.out.println("=====================");
             System.out.println("Leyendo con List");
-            System.out.println("=====================");
 
             List<String> lineas = Files.readAllLines(Path.of("D:\\carmen\\AD\\Ficheros\\archivo2.txt"), StandardCharsets.UTF_8);
 
@@ -25,7 +24,6 @@ public class Ejercicio4Ficheros {
 
             System.out.println("=====================");
             System.out.println("Leyendo con ReadString");
-            System.out.println("=====================");
 
             String ficheroCompleto = Files.readString(Path.of("D:\\carmen\\AD\\Ficheros\\archivo2.txt"), StandardCharsets.UTF_8);
             System.out.println(ficheroCompleto);
