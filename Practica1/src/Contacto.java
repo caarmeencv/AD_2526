@@ -37,14 +37,12 @@ public class Contacto implements Serializable{
         this.telefono = telefono;
     }
 
-     @Override
-    public String toString() {
-        return "Trabajador{" +
-                "nombre='" + nombre + '\'' +
-                ", puesto='" + correoelect + '\'' +
-                ", edad=" + telefono +
-                '}';
+    public void  mostrarAgenda() {
+        System.out.println("Contacto {" +
+                "Nombre='" + nombre + '\'' +
+                ", Correo Electrónico='" + correoelect + '\'' +
+                ", Teléfono=" + telefono +
+                '}');
     }
-
 
 }
