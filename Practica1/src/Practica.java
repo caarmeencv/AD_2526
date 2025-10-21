@@ -10,34 +10,25 @@ public class Practica {
             opcion = Agenda.dameOpcion();
             switch (opcion) {
                 case 1:
-                    Agenda.llenar();
-                    System.out.println("Agenda LLENA");
+                    Agenda.crear();
                     break;
                 case 2:
-                    
+                    Agenda.anadir();
                     break;
                 case 3:
-                    //Agenda.mostrar();
                     break;
                 case 4:
-                    // System.out.print("Dame clave de aspirante: ");
-                    // clave = Leer.datoInt();
-                    //Agenda.mostrarAspirante(clave);
                     break;
                 case 5:
-                    //System.out.print("Dame clave de aspirante: ");
-                    // clave = Leer.datoInt();
-                    //Agenda.eliminarAspirante(clave);
                     break;
                 case 6:
                     
                     break;
                 case 7:
-                    Agenda.mostrar();
+                    Agenda.mostrarContactos();
                     break;
                 case 8:
                     Agenda.vaciar();
-                    System.out.println("Agenda VACIA");
                     break;
                 case 9:
                     System.out.println("FINAL");

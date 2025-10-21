@@ -4,12 +4,12 @@ import java.io.Serializable;
 public class Contacto implements Serializable{
 
     private String nombre;
-    private String correoelect;
+    private String correo;
     private int telefono;
 
-    public Contacto(String nombre, String correoelect, int telefono){
+    public Contacto(String nombre, String correo, int telefono){
         this.nombre = nombre;
-        this.correoelect = correoelect;
+        this.correo = correo;
         this.telefono = telefono;
     }
 
@@ -21,12 +21,12 @@ public class Contacto implements Serializable{
         this.nombre = nombre;
     }
 
-    public String getCorreoElect() {
-        return correoelect;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setCorreoElect(String correoelect) {
-        this.correoelect = correoelect;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public int getTelefono() {
@@ -38,11 +38,9 @@ public class Contacto implements Serializable{
     }
 
     public void  mostrarAgenda() {
-        System.out.println("Contacto {" +
-                "Nombre='" + nombre + '\'' +
-                ", Correo Electrónico='" + correoelect + '\'' +
-                ", Teléfono=" + telefono +
-                '}');
+        System.out.println("Nombre='" + nombre + '\'' +
+                ", Correo Electrónico='" + correo + '\'' +
+                ", Teléfono=" + telefono);
     }
 
 }
