@@ -6,6 +6,7 @@ public class Contacto implements Serializable{
     private String nombre;
     private String correo;
     private int telefono;
+    private boolean borrado; //si es true, significa que está borrado
 
     public Contacto(String nombre, String correo, int telefono){
         this.nombre = nombre;
@@ -35,6 +36,14 @@ public class Contacto implements Serializable{
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
+    }
+
+    public boolean isBorrado(){
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 
     public void  mostrarAgenda() {

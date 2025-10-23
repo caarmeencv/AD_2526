@@ -16,13 +16,16 @@ public class Practica {
                     Agenda.anadir();
                     break;
                 case 3:
+                    Agenda.consultarContacto();
                     break;
                 case 4:
+                    Agenda.modificarContacto();
                     break;
                 case 5:
+                    Agenda.borrar();
                     break;
                 case 6:
-                    
+                    Agenda.recuperarContacto();
                     break;
                 case 7:
                     Agenda.mostrarContactos();
