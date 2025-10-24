@@ -1,10 +1,9 @@
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
+import java.io.*;
+import java.text.SimpleDateFormat;
 
 public class Agenda {
 
@@ -12,7 +11,10 @@ public class Agenda {
 
     private ArrayList<Contacto> Agenda;
 
-    private final String archivoAgenda = "agenda.dat";
+    private String archivoAgenda = "agenda.dat";
+
+    private String archivoSeguridad = "seguridad.dat";
+
 
     //private final String archivoAgenda = "agenda.dat";
     public Agenda() {
@@ -72,7 +74,19 @@ public class Agenda {
 
     //Mostrar la agenda
     public void mostrarContactos() {
-        if (Agenda.isEmpty()) {
+        //asumimos que todos los contactos están borrados
+        boolean todosBorrados = true;
+        //recorro todos los contactos de agenda
+        for (Contacto c : Agenda) {
+
+            //si no esta borrado, cambiamos el estado a false para indicar que hay algun contacto no borrado
+            if (!c.isBorrado()) {
+                todosBorrados = false;
+                break; // sabemos  que por lo menos uno esta borrado, asi que no nos hace falta mas
+            }
+        }
+
+        if (Agenda.isEmpty() || todosBorrados == true) {
             System.out.println("La agenda no contiene ningún contacto");
         } else {
             int contador = 0;
@@ -99,7 +113,14 @@ public class Agenda {
 
             for (Contacto c : Agenda) {
                 if (c.getNombre().equalsIgnoreCase(nombre)) {
-                    c.mostrarAgenda();
+                    if(c.isBorrado()){
+                        System.out.println("El contacto ha sido borrado");
+                    } else{
+                        c.mostrarAgenda();
+                    }
+                    return;
+                } else {
+                    System.out.println("El contacto no existe.");
                 }
             }
         }
@@ -148,10 +169,12 @@ public class Agenda {
                 if (c.getNombre().equalsIgnoreCase(nombre)) {
                     c.setBorrado(true);
                     guardarEnArchivo();
-                }
+                    System.out.println("Contacto eliminado.");
+                    return;
+                }                 
             }
 
-            System.out.println("Contacto eliminado.");
+            System.out.println("No hay ningún contacto con ese nombre.");            
 
         }
     }
@@ -166,13 +189,13 @@ public class Agenda {
 
             //si esta borrado, cambiamos el estado a true para indicar que hay algun borrado
             if (c.isBorrado()) {
-                hayBorrados = false;
+                hayBorrados = true;
                 break; // sabemos  que por lo menos uno esta borrado, asi que no nos hace falta mas
             }
         }
 
-        //si la agenda esta vacia o si estan todos borrados, no podremos recuperar ningun contacto
-        if (Agenda.isEmpty() || hayBorrados) {
+        //si la agenda esta vacia o si no hay algun borrado, no podremos recuperar ningun contacto
+        if (Agenda.isEmpty() || hayBorrados==false) {
             System.out.println("No hay contactos por recuperar");
         } else {
             System.out.println("Para recuperar un contacto, se necesita el nombre del mismo.");
@@ -183,17 +206,104 @@ public class Agenda {
                 if (c.getNombre().equalsIgnoreCase(nombre)) {
                     c.setBorrado(false);
                     guardarEnArchivo();
+                    System.out.println("Contacto recuperado.");
+                    return;
                 }
             }
 
-            System.out.println("Contacto recuperado.");
+            System.out.println("No hay ningún contacto con ese nombre.");      
 
         }
     }
 
+    //mostrar informacion del archivo
+    public void mostrarArchivo(){
+        try {
+            File archivo = new File(archivoAgenda);
+            System.out.println("Información del archivo agenda.dat: ");
+            System.out.println(" - Ubicación del archivo: " + archivo.getAbsolutePath());
+            System.out.println(" - Tamaño del archivo: " + archivo.length() + " bytes");
+            System.out.println(" - Permiso de lectura del archivo: " + archivo.canRead());
+            System.out.println(" - Permiso de escritura del archivo: " + archivo.canWrite());
+            System.out.println(" - Permiso de ejecución del archivo: " + archivo.canExecute());
+            long ultimaMod = archivo.lastModified();
+            Date fecha = new Date(ultimaMod);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            System.out.println(" - Fecha y hora de la última modificación del archivo: " + sdf.format(fecha));            
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al mostrar la información del archivo: " + e.getMessage());
+        }
+    }
+
+    //hacer una copia de seguridad
+    public void copiaSeguridad(){
+        File archivoAgendaFile = new File(archivoAgenda);
+        File archivoSeguridadFile = new File(archivoSeguridad);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoAgendaFile));
+         BufferedWriter bw = new BufferedWriter(new FileWriter(archivoSeguridadFile))) {
+
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                
+                bw.write(linea);
+                bw.newLine(); 
+            }
+
+            System.out.println("Copia de seguridad de la agenda creada correctamente en: " + archivoSeguridadFile.getAbsolutePath());
+
+        } catch (Exception e) {
+
+            System.out.println("Error al crear la copia de seguridad de la agenda: " + e.getMessage());
+
+        }
+    }
+
+    //restaurar copia de seguridad
+    public void restaurarCopia(){
+        File archivoAgendaFile = new File(archivoAgenda);
+        File archivoSeguridadFile = new File(archivoSeguridad);
+
+    try (BufferedReader br = new BufferedReader(new FileReader(archivoSeguridadFile));
+         BufferedWriter bw = new BufferedWriter(new FileWriter(archivoAgendaFile))) {
+
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            bw.write(linea);
+            bw.newLine(); 
+        }
+
+        System.out.println("Se ha restaurado la agenda de la copia de seguridad.");
+
+    } catch (Exception e) {
+        System.out.println("Error al restaurar la agenda de la copia de seguridad: " + e.getMessage());
+    }
+    }
+
     //ver mas opciones
     public void masOpciones() {
-
+        int opcion2;
+        do{
+        opcion2 = dameOpcion2();
+            switch (opcion2) {
+                case 1:
+                    mostrarArchivo();
+                    break;
+                case 2:
+                    copiaSeguridad();
+                    break;
+                case 3:
+                    restaurarCopia();
+                    break;
+                case 4:
+                    System.out.println("Submenu cerrado");
+                    break;
+                default:
+                    System.out.println("OPCION Erronea");
+                    break;
+            }
+        } while (opcion2 != 4);
+            
     }
 
     //Primer menu

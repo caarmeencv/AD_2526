@@ -34,10 +34,10 @@ public class Practica {
                     Agenda.vaciar();
                     break;
                 case 9:
-                    System.out.println("FINAL");
+                    Agenda.masOpciones();
                     break;
                 case 10:
-                    System.out.println("FINAL");
+                    System.out.println("FINAL DEL PROGRAMA");
                     break;
                 default:
                     System.out.println("OPCION Erronea");
