@@ -5,10 +5,10 @@ public class Contacto implements Serializable{
 
     private String nombre;
     private String correo;
-    private int telefono;
+    private String telefono;
     private boolean borrado; //si es true, significa que está borrado
 
-    public Contacto(String nombre, String correo, int telefono){
+    public Contacto(String nombre, String correo, String telefono){
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
@@ -30,11 +30,11 @@ public class Contacto implements Serializable{
         this.correo = correo;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
