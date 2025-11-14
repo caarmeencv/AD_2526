@@ -16,31 +16,39 @@ public class Agenda {
 
     private ArrayList<Contacto> Agenda;
 
+    //archivo donde se guarda la agenda
     private String archivoAgenda = "agenda.dat";
 
+    //archivo donde se hará la copia de seguridad
     private String archivoSeguridad = "seguridad.dat";
 
-    //private final String archivoAgenda = "agenda.dat";
+    //contructor
     public Agenda() {
         Agenda = new ArrayList<Contacto>();
     }
 
-    //Crear la agenda y que pregunte si la queremos vacia o con contactos de ejemplo
+    //Crear la agenda y que pregunte si la queremos vacía o con contactos de ejemplo
     public void crear() {
         System.out.println("¿Deseas crear una agenda con contactos o sin contactos (c/s)?");
         String respuesta = teclado.nextLine();
+
         if (respuesta.equalsIgnoreCase("s")) {
+            //crea la agenda vacia y guarda el archivo en agenda.dat
             Agenda.clear();
             guardarEnArchivo();
             System.out.println("Agenda vacía creada correctamente.");
+
         } else if (respuesta.equalsIgnoreCase("c")) {
+            //crea la agenda con 3 contactos y lo guarda en agenda.dat
             Agenda.clear();
             Agenda.add(new Contacto("Juan", "juan@gmail.com", "654892317"));
             Agenda.add(new Contacto("Alejandro", "alejandro@gmail.com", "759846321"));
-            Agenda.add(new Contacto("María", "maria@gmail.com", "632145789"));
+            Agenda.add(new Contacto("Alba", "alba@gmail.com", "632145789"));
             guardarEnArchivo();
             System.out.println("Agenda creada con contactos de ejemplo.");
+
         } else {
+            //si se añade otra opcion que no sea c o s, se volverá al método recursivamente
             System.out.println("¡¡¡ Respuesta no válida !!!");
             crear();
         }
@@ -50,6 +58,7 @@ public class Agenda {
     public void vaciar() {
         if (Agenda.isEmpty()) {
             System.out.println("La agenda no contiene ningún contacto");
+
         } else {
             Agenda.clear();
             guardarEnArchivo();
@@ -64,7 +73,9 @@ public class Agenda {
         String nombre = teclado.nextLine();
 
         for (Contacto c : Agenda) {
+        //recorre la lista
             if (c.getNombre().equalsIgnoreCase(nombre)) {
+                //si el nombre de algún contacto coincide con el nombre dado, volvemos al metodo recursivamente para que nos pida otro nombre
                 System.out.println("Ya existe un contacto con ese nombre.");
                 anadir();
             }
@@ -72,6 +83,7 @@ public class Agenda {
 
         String correo;
         while (true) {
+            //comprobamos que sea un correo valido, si es valido salimos del bucle, si no es valido, nos quedamos hasta que sea
             System.out.println("Correo electrónico: ");
             correo = teclado.nextLine();
             if (validarCorreo(correo)) {
@@ -83,6 +95,7 @@ public class Agenda {
 
         String telefono;
         while (true) {
+            //comprobamos que sea un telefono valido, si es valido salimos del bucle, si no es valido, nos quedamos hasta que sea
             System.out.println("Teléfono: ");
             telefono = teclado.nextLine();
             if (validarTelefono(telefono)) {
@@ -92,6 +105,7 @@ public class Agenda {
             }
         }
 
+        //cuando tengamos todo, se añade el nuevo contacto y se guarda en agenda.dat
         Agenda.add(new Contacto(nombre, correo, telefono));
         guardarEnArchivo();
         System.out.println("El contacto se ha añadido con éxito.");
@@ -103,7 +117,6 @@ public class Agenda {
         boolean todosBorrados = true;
         //recorro todos los contactos de agenda
         for (Contacto c : Agenda) {
-
             //si no esta borrado, cambiamos el estado a false para indicar que hay algun contacto no borrado
             if (!c.isBorrado()) {
                 todosBorrados = false;
@@ -114,15 +127,18 @@ public class Agenda {
         if (Agenda.isEmpty() || todosBorrados == true) {
             System.out.println("La agenda no contiene ningún contacto");
         } else {
+            //contador para indicar cuantos contactos hay
             int contador = 0;
             System.out.println("Contactos:");
             for (Contacto c : Agenda) {
+                //se recorre toda la lista y si no está borrado, se imprime el contacto en la consola y se suma al contador
                 if (!c.isBorrado()) {
                     System.out.print(" - ");
                     c.mostrarAgenda();
                     contador++;
                 }
             }
+            //al acabar de recorrer la agenda se muestra el total de contactos
             System.out.println("Total de contactos en la agenda: " + contador);
         }
     }
@@ -139,6 +155,7 @@ public class Agenda {
             for (Contacto c : Agenda) {
                 if (c.getNombre().equalsIgnoreCase(nombre)) {
                     if (c.isBorrado()) {
+                        //si el contacto está borrado, no aparecen sus datos por pantalla
                         System.out.println("El contacto ha sido borrado");
                     } else {
                         System.out.print(" - ");
@@ -153,7 +170,18 @@ public class Agenda {
 
     //modificar contacto
     public void modificarContacto() {
-        if (Agenda.isEmpty()) {
+        //asumimos que todos los contactos están borrados
+        boolean todosBorrados = true;
+        //recorro todos los contactos de agenda
+        for (Contacto c : Agenda) {
+            //si no esta borrado, cambiamos el estado a false para indicar que hay algun contacto no borrado
+            if (!c.isBorrado()) {
+                todosBorrados = false;
+                break; // sabemos  que por lo menos uno esta borrado, asi que no nos hace falta mas
+            }
+        }
+
+        if (Agenda.isEmpty() || todosBorrados == true) {
             System.out.println("La agenda no contiene ningún contacto");
         } else {
             System.out.println("Para modificar un contacto, se necesita el nombre del mismo.");
@@ -172,6 +200,7 @@ public class Agenda {
                     c.setNombre(nombre2);
                     String correo;
                     while (true) {
+                        //para comprobar si el correo dado es valido
                         System.out.println("Correo electrónico: ");
                         correo = teclado.nextLine();
                         if (validarCorreo(correo)) {
@@ -183,6 +212,7 @@ public class Agenda {
 
                     String telefono;
                     while (true) {
+                        //para comprobar si el telefono dado es valido
                         System.out.println("Teléfono: ");
                         telefono = teclado.nextLine();
                         if (validarTelefono(telefono)) {
@@ -206,7 +236,17 @@ public class Agenda {
 
     //Borrar contacto
     public void borrar() {
-        if (Agenda.isEmpty()) {
+        //asumimos que todos los contactos están borrados
+        boolean todosBorrados = true;
+        //recorro todos los contactos de agenda
+        for (Contacto c : Agenda) {
+            //si no esta borrado, cambiamos el estado a false para indicar que hay algun contacto no borrado
+            if (!c.isBorrado()) {
+                todosBorrados = false;
+                break; // sabemos  que por lo menos uno esta borrado, asi que no nos hace falta mas
+            }
+        }
+        if (Agenda.isEmpty() || todosBorrados == true) {
             System.out.println("La agenda no contiene ningún contacto");
         } else {
             System.out.println("Para borrar un contacto, se necesita el nombre del mismo");
@@ -231,7 +271,7 @@ public class Agenda {
         }
     }
 
-    //recuperar contacto de borrados
+    //recuperar contacto borrado
     public void recuperarContacto() {
         //asumimos que no hay ningún contacto borrado en la agenda
         boolean hayBorrados = false;
@@ -257,6 +297,7 @@ public class Agenda {
             for (Contacto c : Agenda) {
                 if (c.getNombre().equalsIgnoreCase(nombre)) {
                     if(!c.isBorrado()){
+                        //si el contacto no esta borrado
                         System.out.println("Este contacto no ha sido borrado o ya se ha recuperado.");
                         return;
                     }
@@ -284,10 +325,14 @@ public class Agenda {
             System.out.println(" - Permiso de lectura del archivo: " + archivo.canRead());
             System.out.println(" - Permiso de escritura del archivo: " + archivo.canWrite());
             System.out.println(" - Permiso de ejecución del archivo: " + archivo.canExecute());
+            //guarda en ultimaMod el tiempo desde la ultima modificacion en long
             long ultimaMod = archivo.lastModified();
+            //representa la fecha y hora de la última modificación en una forma manejable
             Date fecha = new Date(ultimaMod);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            System.out.println(" - Fecha y hora de la última modificación del archivo: " + sdf.format(fecha));
+            //crea un formato para mostrar la fecha en dia/mes/año y hora:minuto:segundo
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            //format.format(fecha) es como decir "formatea la fecha usando el formato definido en el SimpleDateFormat"
+            System.out.println(" - Fecha y hora de la última modificación del archivo: " + format.format(fecha));
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al mostrar la información del archivo: " + e.getMessage());
         }
@@ -299,10 +344,11 @@ public class Agenda {
         Path destino = Paths.get(archivoSeguridad);
 
         try {
-            // Copia el archivo (si ya existe, lo sobreescribe)
+            // Copia el archivo (si ya existe, lo sobreescribe - StandardCopyOption.REPLACE_EXISTING)
             Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
 
             System.out.println("Copia de seguridad creada correctamente en: " + destino.toAbsolutePath());
+
         } catch (NoSuchFileException e) {
             System.out.println("No existe el archivo de agenda, no se puede hacer copia de seguridad.");
         } catch (IOException e) {
@@ -316,16 +362,21 @@ public class Agenda {
         Path destino = Paths.get(archivoAgenda);
 
         try {
+            // Copia el archivo (si ya existe, lo sobreescribe - StandardCopyOption.REPLACE_EXISTING)
             Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Se ha restaurado la agenda desde la copia de seguridad.");
 
-            // Recargar contactos desde el archivo restaurado
+            // Borrar los contactos de la agenda antes de restaurar
             Agenda.clear();
+
             try (BufferedReader br = new BufferedReader(new FileReader(archivoAgenda))) {
                 String linea;
                 while ((linea = br.readLine()) != null) {
+                    //cada linea supone un contacto y cada parte del contacto está separada por ;, con split dividimos por partes separando las mismas por el ;
                     String[] partes = linea.split(";");
+                    //en total hay 4 partes: nombre, correo, telefono y si esta borrado o no. El if comprueba que hayan exactamente 4 partes
                     if (partes.length == 4) {
+                        //para definir cada parte, no empieza en 1 sino en 0
                         String nombre = partes[0];
                         String correo = partes[1];
                         String telefono = partes[2];
@@ -348,6 +399,7 @@ public class Agenda {
 
     //ver mas opciones
     public void masOpciones() {
+        //método para definir las opciones del submenu
         int opcion2;
         do {
             opcion2 = dameOpcion2();
@@ -373,7 +425,7 @@ public class Agenda {
     }
 
     //Primer menu
-    public static void Menu() {
+    public static void menu() {
         System.out.println("\n    MENU    ");
         System.out.println("===============");
         System.out.println("1- Crear agenda.");
@@ -389,7 +441,7 @@ public class Agenda {
     }
 
     //Submenu
-    public static void Menu2() {
+    public static void menu2() {
         System.out.println("\n    SUBMENU    ");
         System.out.println("===============");
         System.out.println("1- Mostrar información del archivo.");
@@ -398,10 +450,10 @@ public class Agenda {
         System.out.println("4- Volver al anterior menú.\n");
     }
 
-    //Para que nos deje seleccionar opcion después de ambos menús
+    //Para que nos deje seleccionar opcion después de ambos menús. En ambos métodos se mostrarían los menus (menu() y menu2()) y nos pediría que escribamos en el teclado una opción
     public int dameOpcion() {
         int opcion;
-        Menu();
+        menu();
         opcion = teclado.nextInt();
         teclado.nextLine();
         return opcion;
@@ -409,7 +461,7 @@ public class Agenda {
 
     public int dameOpcion2() {
         int opcion;
-        Menu2();
+        menu2();
         opcion = teclado.nextInt();
         teclado.nextLine();
         return opcion;
@@ -417,18 +469,25 @@ public class Agenda {
 
     //Validar correo electrónico
     private boolean validarCorreo(String correo) {
-        String compCorreo = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
-        return correo.matches(compCorreo);
+        String comprobarCorreo = ".+@.+\\..+";
+        /* . -> cualquier caracter
+         * + -> una o mas veces
+         * @ -> tiene que existir una arroba
+         * \\. -> para escribir el punto literal (ya que de por si el . significa cualquier caracter)
+         * ".+@.+\\..+" -> cualquier caracter una o mas veces + @ + cualquier caracter una o mas veces + . + cualquier caracter una o mas veces 
+         */
+        return correo.matches(comprobarCorreo);
     }
 
     //Validar número de teléfono
     private boolean validarTelefono(String telefono) {
-        String compTelefono = "\\d{9}"; // solo 9 dígitos
-        return telefono.matches(compTelefono);
+        //Solo 9 dígitos
+        String comprobarTelefono = "\\d{9}"; 
+        return telefono.matches(comprobarTelefono);
     }
 
-    //Para que nos guarde la agenda y los borrados en un archivo
-    // Guardar la agenda en el archivo
+
+    // Guardar la agenda y los borrados en el archivo
     public void guardarEnArchivo() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(archivoAgenda))) {
             for (Contacto c : Agenda) {

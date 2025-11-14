@@ -37,10 +37,10 @@ public class Practica {
                     Agenda.masOpciones();
                     break;
                 case 10:
-                    System.out.println("FINAL DEL PROGRAMA");
+                    System.out.println("FIN DEL PROGRAMA");
                     break;
                 default:
-                    System.out.println("OPCION Erronea");
+                    System.out.println("Opción érronea");
                     break;
             }
         } while (opcion != 10);
