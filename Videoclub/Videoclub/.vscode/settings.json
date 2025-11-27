@@ -1,0 +1,11 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "d:\\carmen\\AD\\commons-lang3-3.20.0.jar",
+        "d:\\carmen\\AD\\opencsv-5.9.jar",
+        "d:\\carmen\\Descargas\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\jrt-fs.jar",
+        "d:\\carmen\\AD\\MySQL\\mysql-connector-j-9.5.0\\mysql-connector-j-9.5.0\\mysql-connector-j-9.5.0.jar"
+    ]
+}
