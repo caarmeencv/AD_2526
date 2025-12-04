@@ -4,11 +4,11 @@ public class ContactoDTO {
     private int ID_Contacto;
     private String Email;
     private String Nombre;
-    private int Telefono;
+    private String Telefono;
 
     public ContactoDTO() {}
     
-    public ContactoDTO(int ID_Contacto, String Email, String Nombre, int Telefono) {
+    public ContactoDTO(int ID_Contacto, String Email, String Nombre, String Telefono) {
         this.ID_Contacto = ID_Contacto;
         this.Email = Email;
         this.Nombre = Nombre;
@@ -39,11 +39,11 @@ public class ContactoDTO {
         this.Nombre = Nombre;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
-    public void setTelefono(int Telefono) {
+    public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
 
