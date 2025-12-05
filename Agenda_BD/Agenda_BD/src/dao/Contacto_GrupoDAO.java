@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Contacto_GrupoDAO {
-
+/*
     public void create(Contacto_GrupoDTO actor) {
         String sql = "INSERT INTO actor(first_name, last_name) VALUES (?, ?)";
         try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -152,5 +152,5 @@ public class Contacto_GrupoDAO {
 
         return actores;
     }
-
+*/
 }

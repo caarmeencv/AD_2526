@@ -19,12 +19,14 @@ public class Contacto {
             sc.nextLine(); // Consumir salto de línea
 
             switch (opcion) {
-                case 1 -> listarActores();
-                case 2 -> buscarActorPorId();
-                case 3 -> crearActor();
-                case 4 -> actualizarActor();
-                case 5 -> borrarActor();
-                case 6 -> System.out.println("Saliendo...");
+                case 1 -> crearContacto();
+                case 2 -> listarContacto();
+                case 3 -> buscarContacto();
+                case 4 -> modificarContacto();
+                case 5 -> eliminarContacto();
+                case 6 -> eliminarContacto();
+                case 7 -> eliminarContacto();
+                case 8 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción no válida.");
             }
         }
@@ -45,14 +47,14 @@ public class Contacto {
         System.out.print("Elige una opción: ");
     }
 
-    private static void listarActores() {
+    private static void listarContacto() {
         List<ContactoDTO> contactos = ContactoDAO.findAll();
         for(ContactoDTO contacto : contactos){
             System.out.println(contacto);
         }
     }
 
-    private static void buscarActorPorId() {
+    private static void buscarContacto() {
         System.out.print("Introduce ID del actor: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -64,7 +66,7 @@ public class Contacto {
         }
     }
 
-    private static void crearActor() {
+    private static void crearContacto() {
         System.out.print("Introduce nombre: ");
         String nombre = sc.nextLine();
         System.out.print("Introduce apellido: ");
@@ -76,7 +78,7 @@ public class Contacto {
         System.out.println("Actor creado con ID: " + nuevo.getID_Contacto());
     }
 
-    private static void actualizarActor() {
+    private static void modificarContacto() {
         System.out.print("Introduce ID del actor a actualizar: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -95,7 +97,7 @@ public class Contacto {
         }
     }
 
-    private static void borrarActor() {
+    private static void eliminarContacto() {
         System.out.print("Introduce ID del actor a borrar: ");
         int id = sc.nextInt();
         sc.nextLine();

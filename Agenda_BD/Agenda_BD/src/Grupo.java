@@ -19,10 +19,10 @@ public class Grupo {
             sc.nextLine(); // Consumir salto de línea
 
             switch (opcion) {
-                case 1 -> listarCategorias();
-                case 2 -> buscarCategoriaPorId();
-                case 3 -> crearCategoria();
-                case 4 -> actualizarCategoria();
+                case 1 -> crearGrupo();
+                case 2 -> listarGrupos();
+                case 3 -> modificarGrupo();
+                case 4 -> eliminarGrupo();
                 case 5 -> borrarCategoria();
                 case 6 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción no válida.");
@@ -43,14 +43,14 @@ public class Grupo {
         System.out.print("Elige una opción: ");
     }
 
-    private static void listarCategorias() {
+    private static void listarGrupos() {
         List<GrupoDTO> grupos = GrupoDAO.findAll();
         for(GrupoDTO grupo : grupos){
             System.out.println(grupo);
         }
     }
 
-    private static void buscarCategoriaPorId() {
+    private static void buscarGrupoPorID() {
         System.out.print("Introduce ID de la categoria: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -62,7 +62,7 @@ public class Grupo {
         }
     }
 
-    private static void crearCategoria() {
+    private static void crearGrupo() {
         System.out.print("Introduce nombre: ");
         String nombre = sc.nextLine();
         GrupoDTO nuevo = new GrupoDTO();
@@ -71,7 +71,7 @@ public class Grupo {
         System.out.println("Categoria creada con ID: " + nuevo.getID_Grupo());
     }
 
-    private static void actualizarCategoria() {
+    private static void modificarGrupo() {
         System.out.print("Introduce ID de la categoria a actualizar: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -87,7 +87,7 @@ public class Grupo {
         }
     }
 
-    private static void borrarCategoria() {
+    private static void eliminarGrupo() {
         System.out.print("Introduce ID de la categoria a borrar: ");
         int id = sc.nextInt();
         sc.nextLine();
