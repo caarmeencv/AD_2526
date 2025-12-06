@@ -1,8 +1,11 @@
 import dao.GrupoDAO;
 import dto.GrupoDTO;
 import dto.ContactoDTO;
+
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import utils.Validation;
 
 public class Grupo {
 
@@ -14,21 +17,25 @@ public class Grupo {
         int opcion = 0;
 
         while (opcion != 6) {
-            mostrarMenu();
-            opcion = sc.nextInt();
-            sc.nextLine(); // Consumir salto de línea
+            try{
+                mostrarMenu();
+                opcion = sc.nextInt();
+                sc.nextLine(); // Consumir salto de línea
 
-            switch (opcion) {
-                case 1 -> crearGrupo();
-                case 2 -> listarGrupos();
-                case 3 -> modificarGrupo();
-                case 4 -> eliminarGrupo();
-                case 5 -> verContactosGrupo(); // ahora muestra contactos del grupo
-                case 6 -> System.out.println("Saliendo...");
-                default -> System.out.println("Opción no válida.");
-            }
+                switch (opcion) {
+                    case 1 -> crearGrupo();
+                    case 2 -> listarGrupos();
+                    case 3 -> modificarGrupo();
+                    case 4 -> eliminarGrupo();
+                    case 5 -> verContactosGrupo(); // ahora muestra contactos del grupo
+                    case 6 -> System.out.println("Saliendo...");
+                    default -> System.out.println("Opción no válida.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, introduce un número.");
+                sc.nextLine(); 
         }
-
+        }
         sc.close();
     }
 
@@ -53,22 +60,24 @@ public class Grupo {
             System.out.println(grupo);
         }
     }
-/*
-    private static void buscarGrupoPorID() {
-        System.out.print("Introduce ID del grupo: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-        GrupoDTO grupo = grupoDAO.findById(id);
-        if (grupo != null) {
-            System.out.println(grupo);
-        } else {
-            System.out.println("Grupo no encontrado.");
-        }
-    }
-*/
+
     private static void crearGrupo() {
-        System.out.print("Introduce nombre: ");
-        String nombre = sc.nextLine();
+
+        String nombre;
+
+        while(true) {        
+            System.out.print("Introduce nombre: ");
+            nombre = sc.nextLine();
+
+            //Comprobar validez del nombre
+            if(!Validation.validarNombreGrupo(nombre)) {
+                System.out.println("Nombre de grupo no válido. Debe tener hasta 100 caracteres.");
+            } else{
+                break;
+            }
+
+        }
+
         GrupoDTO nuevo = new GrupoDTO();
         nuevo.setNombre(nombre);
         grupoDAO.create(nuevo);
@@ -81,8 +90,20 @@ public class Grupo {
         sc.nextLine();
         GrupoDTO grupo = grupoDAO.findById(id);
         if (grupo != null) {
-            System.out.print("Nuevo nombre (" + grupo.getNombre() + "): ");
-            String nombre = sc.nextLine();
+            String nombre;
+
+            while(true) {        
+                System.out.print("Introduce nombre: ");
+                nombre = sc.nextLine();
+
+                //Comprobar validez del nombre
+                if(!Validation.validarNombreGrupo(nombre)) {
+                    System.out.println("Nombre de grupo no válido. Debe tener hasta 100 caracteres.");
+                } else{
+                    break;
+                }
+            }
+
             grupo.setNombre(nombre.isEmpty() ? grupo.getNombre() : nombre);
             grupoDAO.update(grupo);
             System.out.println("Grupo actualizado.");

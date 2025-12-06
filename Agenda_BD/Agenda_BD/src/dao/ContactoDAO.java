@@ -8,13 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContactoDAO {
 
     public void create(ContactoDTO contacto) {
         String sql = "INSERT INTO Contacto(Nombre, Email, Telefono) VALUES (?, ?, ?)";
-        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, contacto.getNombre());
             ps.setString(2, contacto.getEmail());
@@ -24,7 +27,8 @@ public class ContactoDAO {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    // generated key available: handle assignment to ContactoDTO here if DTO exposes an ID setter
+                    // generated key available: handle assignment to ContactoDTO here if DTO exposes
+                    // an ID setter
                     // e.g. contacto.setId(rs.getInt(1));
                 }
             }
@@ -61,7 +65,9 @@ public class ContactoDAO {
         List<ContactoDTO> contactos = new ArrayList<>();
         String sql = "SELECT ID_Contacto, Nombre, Email, Telefono FROM Contacto";
 
-        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 ContactoDTO contacto = new ContactoDTO();
@@ -99,64 +105,48 @@ public class ContactoDAO {
         String sqlContacto = "DELETE FROM Contacto WHERE ID_Contacto = ?";
         String sqlContactoGrupo = "DELETE FROM Contacto_Grupo WHERE ID_Contacto = ?";
 
-
         try (Connection conn = ConnectionFactory.getConnection()) {
 
-            //Desactivar autocommit para controlar la transaccion
+            // Desactivar autocommit para controlar la transaccion
             conn.setAutoCommit(false);
 
-            try(PreparedStatement psCG = conn.prepareStatement(sqlContactoGrupo);
-            PreparedStatement psC = conn.prepareStatement(sqlContacto)){
+            try (PreparedStatement psCG = conn.prepareStatement(sqlContactoGrupo);
+                    PreparedStatement psC = conn.prepareStatement(sqlContacto)) {
 
-                //1. Borrar relaciones en film_actor
+                // 1. Borrar relaciones en film_actor
                 psCG.setInt(1, id);
                 psCG.executeUpdate();
 
-                //2. borrar el actor
+                // 2. borrar el actor
                 psC.setInt(1, id);
                 psC.executeUpdate();
 
-                //Confirmar todo
+                // Confirmar todo
                 conn.commit();
-            
-            
+
             } catch (SQLException e) {
-            conn.rollback(); //deshacer si hago falla
-            throw e;
-        }
+                conn.rollback(); // deshacer si hago falla
+                throw e;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<ContactoDTO> findByNameOrEmail(String NombreEmail) {
-        List<ContactoDTO> contactos = new ArrayList<>();
-        String sql = "SELECT ID_Contacto, Nombre, Email, Telefono FROM Contacto "
-                + "WHERE Nombre LIKE ? OR Email LIKE ?";
+    public void addContactoToGrupo(int contactoId, int grupoId) {
+        String sqlInsert = "INSERT INTO Contacto_Grupo (ID_Contacto, ID_Grupo) VALUES (?, ?)";
 
-        try (Connection conn = ConnectionFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sqlInsert)) {
 
-            String filtro = "%" + NombreEmail + "%";
-            ps.setString(1, filtro);
-            ps.setString(2, filtro);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    ContactoDTO contacto = new ContactoDTO();
-                    contacto.setID_Contacto(rs.getInt("ID_Contacto"));
-                    contacto.setNombre(rs.getString("Nombre"));
-                    contacto.setEmail(rs.getString("Email"));
-                    contacto.setTelefono(rs.getString("Telefono"));
-                    contactos.add(contacto);
-                }
-            }
+            ps.setInt(1, contactoId);
+            ps.setInt(2, grupoId);
+            ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        return contactos;
     }
 
 }
