@@ -1,36 +1,38 @@
 package utils;
 
-import com.opencsv.CSVReader;
-
 import dto.ContactoDTO;
-
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import com.opencsv.CSVReader;
+
 
 public class LeerCSV {
-        public static List<ContactoDTO> loadContactsFromCsv(String path) {
+
+    private static final String CSV_PATH = "src/contactos.csv";
+
+    public static List<ContactoDTO> loadContactosFromCsv() {
         List<ContactoDTO> contactos = new ArrayList<>();
 
-        try (CSVReader reader = new CSVReader(new FileReader(path))) {
+        try (CSVReader reader = new CSVReader(new FileReader(CSV_PATH))) {
             String[] row;
 
-            // Saltar cabecera si la hay
-            reader.readNext();
 
             while ((row = reader.readNext()) != null) {
                 String nombre = row[0];
-                String email = row[1];
-                String telefono =row[2];
+                String telefono = row[1];
+                String email = row[2];
+
                 ContactoDTO contacto = new ContactoDTO();
                 contacto.setNombre(nombre);
-                contacto.setEmail(email);
                 contacto.setTelefono(telefono);
+                contacto.setEmail(email);
+
                 contactos.add(contacto);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error leyendo CSV: " + e.getMessage());
         }
 
         return contactos;
