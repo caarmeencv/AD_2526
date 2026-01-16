@@ -1,0 +1,5 @@
+com\ad\agenda\App.class
+com\ad\agenda\repository\ContactoRepository.class
+com\ad\agenda\entity\Contacto.class
+com\ad\agenda\repository\GrupoRepository.class
+com\ad\agenda\entity\Grupo.class

@@ -6,14 +6,11 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-    private static final String URL = "jdbc:sqlite:database/prueba.db";
-    private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String URL = "jdbc:sqlite:database/Agenda.db";
 
-    // Evita que alguien instancie esta clase
     private ConnectionFactory() {}
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
+        return DriverManager.getConnection(URL);
     }
 }

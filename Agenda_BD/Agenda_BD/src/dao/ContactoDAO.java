@@ -18,7 +18,7 @@ public class ContactoDAO {
 
             ps.setString(1, contacto.getNombre());
             ps.setString(2, contacto.getEmail());
-            ps.setInt(3, contacto.getTelefono());
+            ps.setString(3, contacto.getTelefono());
 
             ps.executeUpdate();
 
@@ -46,7 +46,7 @@ public class ContactoDAO {
                     contacto.setID_Contacto(rs.getInt("ID_Contacto"));
                     contacto.setNombre(rs.getString("Nombre"));
                     contacto.setEmail(rs.getString("Email"));
-                    contacto.setTelefono(rs.getInt("Telefono"));
+                    contacto.setTelefono(rs.getString("Telefono"));
                     return contacto;
                 }
             }
@@ -68,7 +68,7 @@ public class ContactoDAO {
                 contacto.setID_Contacto(rs.getInt("ID_Contacto"));
                 contacto.setNombre(rs.getString("Nombre"));
                 contacto.setEmail(rs.getString("Email"));
-                contacto.setTelefono(rs.getInt("Telefono"));
+                contacto.setTelefono(rs.getString("Telefono"));
                 contactos.add(contacto);
             }
 
@@ -85,7 +85,7 @@ public class ContactoDAO {
 
             ps.setString(1, contacto.getNombre());
             ps.setString(2, contacto.getEmail());
-            ps.setInt(3, contacto.getTelefono());
+            ps.setString(3, contacto.getTelefono());
             ps.setInt(4, contacto.getID_Contacto());
 
             ps.executeUpdate();
@@ -147,7 +147,7 @@ public class ContactoDAO {
                     contacto.setID_Contacto(rs.getInt("ID_Contacto"));
                     contacto.setNombre(rs.getString("Nombre"));
                     contacto.setEmail(rs.getString("Email"));
-                    contacto.setTelefono(rs.getInt("Telefono"));
+                    contacto.setTelefono(rs.getString("Telefono"));
                     contactos.add(contacto);
                 }
             }
