@@ -1,35 +1,43 @@
 package com.practica1.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.practica1.entity.Curso;
 import com.practica1.repository.CursoRepository;
-;
 
+@Service
 public class CursoService {
 
     @Autowired
     private CursoRepository cursoRepository;
 
-    public Curso crearCurso(Curso curso) {
+    // Crear un curso
+    public Curso crearCurso(String nombre) {
+        Curso curso = new Curso(nombre);
         return cursoRepository.save(curso);
     }
 
-    public List<Curso> listarCursos() {
+    // Listar todos los cursos
+    public List<Curso> listarTodos() {
         return cursoRepository.findAll();
     }
 
+    // Obtener un curso por id
+    public Optional<Curso> obtenerPorId(Long id) {
+        return cursoRepository.findById(id);
+    }
+
+    // Eliminar un curso
     public void eliminarCurso(Long id) {
         cursoRepository.deleteById(id);
     }
 
-    public Curso obtenerCursoPorId(Long id) {
-        return cursoRepository.findById(id).orElse(null);
-    }
-
-    public Curso actualizarCurso(Curso curso) {
-        return cursoRepository.save(curso);
+    // Contar cursos
+    public long contarCursos() {
+        return cursoRepository.count();
     }
 }

@@ -11,23 +11,18 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Alumno {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String email;
 
-    public Alumno() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
-    //helper method
-    public void addCurso(Curso curso) {
-        this.curso = curso;
-        curso.getAlumnos().add(this);
+    // Constructores
+    public Alumno() {
     }
 
     public Alumno(String nombre, String email) {
@@ -35,8 +30,19 @@ public class Alumno {
         this.email = email;
     }
 
+    public Alumno(String nombre, String email, Curso curso) {
+        this.nombre = nombre;
+        this.email = email;
+        this.curso = curso;
+    }
+
+    // Getters y Setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -63,9 +69,33 @@ public class Alumno {
         this.curso = curso;
     }
 
+    // Helper para asignar un curso (mantiene sincronización)
+    public void asignarCurso(Curso curso) {
+        if (this.curso != null && !this.curso.equals(curso)) {
+            this.curso.getAlumnos().remove(this);
+        }
+        this.curso = curso;
+        if (curso != null && !curso.getAlumnos().contains(this)) {
+            curso.getAlumnos().add(this);
+        }
+    }
+
+    // Helper para remover el curso
+    public void eliminarCurso() {
+        if (this.curso != null) {
+            this.curso.getAlumnos().remove(this);
+            this.curso = null;
+        }
+    }
 
     @Override
     public String toString() {
-        return "Alumno{id=" + id + ", nombre='" + nombre + "', email='" + email + "'}";
+        return "Alumno{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", curso=" + (curso != null ? curso.getNombre() : "Sin curso") +
+                '}';
     }
 }
+
